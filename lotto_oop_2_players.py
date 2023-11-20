@@ -13,16 +13,17 @@ class Card:
                 row[positions[j]] = nums[j]
             self.rows.append(row)
 
+
     def print_card(self):
-        print("------------------------------")
+        print("--------------------------")
         self.print_card_format()
-        print("------------------------------")
+        print("--------------------------")
 
     def print_card_format(self):
         for row in self.rows:
             for num in row:
                 if num == 0:
-                    print("   ", end=" ")
+                    print("- ", end=" ")
                 else:
                     print(f"{num:2d}", end=" ")
             print()
@@ -49,9 +50,9 @@ class Game:
         while True:
             number = self.draw_number()
             print(f"\nНовый бочонок: {number} (осталось {len(self.remaining_numbers)})")
-            print("------- Ваша карточка ------")
+            print("------ Ваша карточка -----")
             self.player_card.print_card()
-            print("---- Карточка компьютера ----")
+            print("--- Карточка компьютера --")
             self.computer_card.print_card()
 
             user_choice = input("Зачеркнуть цифру? (y/n): ").lower()
