@@ -62,6 +62,10 @@ class Game:
                     for row in self.player_card.rows:
                         if number in row:
                             row[row.index(number)] = 0
+                            if number in [num for r in self.computer_card.rows for num in r]:
+                                for r in self.computer_card.rows:
+                                    if number in r:
+                                        r[r.index(number)] = 0
                             break
                 elif number in [num for row in self.computer_card.rows for num in row]:
                     for row in self.computer_card.rows:
