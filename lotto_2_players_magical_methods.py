@@ -1,39 +1,51 @@
 import random
 
+
 class Card:
-    def __init__(self):
+    def __init__(self, digits):
         self.rows = []
-        self.digits = list(range(1, 91))
+        self.digits = digits
         for _ in range(3):
             row = [0] * 9
             positions = sorted(random.sample(range(9), 5))
             nums = sorted(random.sample(self.digits, 5))
-            [self.digits.remove(digit) if digit in nums else None for digit in nums]
+            self.digits = [digit for digit in self.digits if digit not in nums]
             for j in range(5):
                 row[positions[j]] = nums[j]
             self.rows.append(row)
 
-
-    def print_card(self):
-        print("--------------------------")
-        self.print_card_format()
-        print("--------------------------")
-
-    def print_card_format(self):
+    def __str__(self):
+        card_str = "--------------------------\n"
         for row in self.rows:
             for num in row:
                 if num == 0:
-                    print("- ", end=" ")
+                    card_str += "-  "
                 else:
-                    print(f"{num:2d}", end=" ")
-            print()
+                    card_str += f"{num:2d} "
+            card_str += "\n"
+        card_str += "--------------------------"
+        return card_str
+
+    def __eq__(self, other):
+        if isinstance(other, Card):
+            return self.rows == other.rows
+        return False
 
 
 class Game:
     def __init__(self):
-        self.player_card = Card()
-        self.computer_card = Card()
-        self.remaining_numbers = list(range(1, 91))
+        digits = list(range(1, 91))
+        self.player_card = Card(digits)
+        self.computer_card = Card(digits)
+        self.remaining_numbers = digits
+
+    def __str__(self):
+        return f"Player's Card:\n{self.player_card}\nComputer's Card:\n{self.computer_card}"
+
+    def __eq__(self, other):
+        if isinstance(other, Game):
+            return self.player_card == other.player_card and self.computer_card == other.computer_card
+        return False
 
     def draw_number(self):
         number = random.choice(self.remaining_numbers)
@@ -41,19 +53,16 @@ class Game:
         return number
 
     def check_winner(self, card):
-        for row in card.rows:
-            if any(num != 0 for num in row):
-                return False
-        return True
+        return all(num == 0 for row in card.rows for num in row)
 
     def play(self):
         while True:
             number = self.draw_number()
             print(f"\nНовый бочонок: {number} (осталось {len(self.remaining_numbers)})")
             print("------ Ваша карточка -----")
-            self.player_card.print_card()
+            print(self.player_card)
             print("--- Карточка компьютера --")
-            self.computer_card.print_card()
+            print(self.computer_card)
 
             user_choice = input("Зачеркнуть цифру? (y/n): ").lower()
 
