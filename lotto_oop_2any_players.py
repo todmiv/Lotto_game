@@ -1,7 +1,16 @@
+"""
+ООП версия игры Лото для 2 игроков любого типа (человек/компьютер).
+
+Использует наследование для разных типов игроков.
+"""
+
 import random
 
 
 class Card:
+    """
+    Класс для представления карточки лото.
+    """
     def __init__(self):
         self.rows = []
         self.digits = list(range(1, 91))
@@ -30,39 +39,63 @@ class Card:
 
 
 class Player:
+    """
+    Базовый класс для игрока.
+    """
     def __init__(self, name):
         self.name = name
         self.card = Card()
 
     def print_card(self):
+        """
+        Печатает карточку игрока.
+        """
         print(f"---- Карточка {self.name} ----")
         self.card.print_card()
 
 
 class Game:
+    """
+    Класс для управления игрой с двумя игроками.
+    """
     def __init__(self, player1_type, player2_type):
+        """
+        Инициализирует игру с двумя игроками заданных типов.
+        """
         self.player1 = self.create_player(player1_type, "Player1")
         self.player2 = self.create_player(player2_type, "Player2")
         self.remaining_numbers = list(range(1, 91))
 
     def create_player(self, player_type, name):
+        """
+        Создает игрока заданного типа.
+        """
         if player_type == "human":
             return HumanPlayer(name)
         elif player_type == "computer":
             return ComputerPlayer(name)
 
     def draw_number(self):
+        """
+        Вытягивает случайное число.
+        """
         number = random.choice(self.remaining_numbers)
         self.remaining_numbers.remove(number)
         return number
 
     def check_winner(self, player):
+        """
+        Проверяет, выиграл ли игрок.
+        """
         for row in player.card.rows:
             if any(num != 0 for num in row):
                 return False
         return True
 
     def handle_choice(self, player, number):
+        """
+        Обрабатывает выбор игрока для данного числа.
+        """
         if isinstance(player, HumanPlayer):
             user_choice = input("Зачеркнуть цифру? (y/n): ").lower()
             if user_choice == 'y':
@@ -90,6 +123,9 @@ class Game:
         return True
 
     def play(self):
+        """
+        Запускает игровой цикл.
+        """
         while True:
             number = self.draw_number()
             print(f"\nНовый бочонок: {number} (осталось {len(self.remaining_numbers)})")
@@ -152,4 +188,3 @@ if __name__ == "__main__":
     player2_type = input("Выберите тип второго игрока (human/computer): ")
     game = Game(player1_type, player2_type)
     game.play()
-

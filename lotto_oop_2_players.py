@@ -1,7 +1,19 @@
+"""
+ООП версия игры Лото для 2 игроков (человек и компьютер) с использованием классов.
+
+Игра симулирует русскую лото с карточками 3x9.
+"""
+
 import random
 
 class Card:
+    """
+    Класс для представления карточки лото.
+    """
     def __init__(self):
+        """
+        Инициализирует карточку с уникальными числами.
+        """
         self.rows = []
         self.digits = list(range(1, 91))
         for _ in range(3):
@@ -14,11 +26,17 @@ class Card:
             self.rows.append(row)
 
     def print_card(self):
+        """
+        Печатает карточку с рамкой.
+        """
         print("------------------------------")
         self.print_card_format()
         print("------------------------------")
 
     def print_card_format(self):
+        """
+        Печатает содержимое карточки.
+        """
         for row in self.rows:
             for num in row:
                 if num == 0:
@@ -29,23 +47,38 @@ class Card:
 
 
 class Game:
+    """
+    Класс для управления игрой Лото.
+    """
     def __init__(self):
+        """
+        Инициализирует игру с двумя карточками.
+        """
         self.player_card = Card()
         self.computer_card = Card()
         self.remaining_numbers = list(range(1, 91))
 
     def draw_number(self):
+        """
+        Вытягивает случайное число.
+        """
         number = random.choice(self.remaining_numbers)
         self.remaining_numbers.remove(number)
         return number
 
     def check_winner(self, card):
+        """
+        Проверяет, выиграла ли карточка.
+        """
         for row in card.rows:
             if any(num != 0 for num in row):
                 return False
         return True
 
     def play(self):
+        """
+        Запускает игровой цикл.
+        """
         while True:
             number = self.draw_number()
             print(f"\nНовый бочонок: {number} (осталось {len(self.remaining_numbers)})")

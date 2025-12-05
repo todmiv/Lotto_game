@@ -1,6 +1,17 @@
+"""
+Функциональная версия игры Лото для 2 игроков (человек и компьютер).
+
+Игра симулирует русскую лото с карточками 3x9, где игроки зачеркивают числа.
+"""
+
 import random
 
 def generate_card():
+    """
+    Генерирует карточку лото 3x9 с уникальными числами от 1 до 90.
+
+    В каждой строке 5 чисел, остальные - пустые клетки.
+    """
     card = []
     digits = list(range(1, 91))
     for i in range(3):
@@ -14,6 +25,9 @@ def generate_card():
 
 
 def print_card(player_card, computer_card):
+    """
+    Печатает обе карточки: игрока и компьютера.
+    """
     print("-------- Ваша карточка -------")
     print_card_format(player_card)
     print("------------------------------")
@@ -23,6 +37,9 @@ def print_card(player_card, computer_card):
 
 
 def print_card_format(card):
+    """
+    Печатает карточку в формате 3x9 с выравниванием.
+    """
     for row in card:
         for num in row:
             if num == 0:
@@ -33,12 +50,18 @@ def print_card_format(card):
 
 
 def draw_number(remaining_numbers):
+    """
+    Вытягивает случайное число из оставшихся.
+    """
     number = random.choice(remaining_numbers)
     remaining_numbers.remove(number)
     return number
 
 
 def check_winner(card):
+    """
+    Проверяет, является ли карточка выигрышной (все числа зачеркнуты).
+    """
     for row in card:
         if any(num != 0 for num in row):
             return False
@@ -46,6 +69,10 @@ def check_winner(card):
 
 
 def main():
+    """
+    Основная функция игры.
+    Инициализирует карточки, запускает игровой цикл.
+    """
     player_card = generate_card()
     computer_card = generate_card()
 
